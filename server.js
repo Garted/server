@@ -16,7 +16,7 @@ app.use("/", express.static("public"));
 app.get("/api/genres", async (req, res) => {
     try {
         const response = await axios.get(
-            `hhttps://api.themoviedb.org/3/genre/movie/list?language=en`,
+            `https://api.themoviedb.org/3/genre/movie/list?language=en`,
             options
         );
         res.json(response);
