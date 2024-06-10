@@ -6,7 +6,7 @@ const app = express();
 
 app.use("/", express.static("public"));
 
-app.get("/character/2", async (req, res) => {
+app.get("/api/character/2", async (req, res) => {
     try {
         const response = await axios.get(
             `https://rickandmortyapi.com/api/character/2`
@@ -18,7 +18,7 @@ app.get("/character/2", async (req, res) => {
     }
 });
 
-app.get("/data", (req, res) => {
+app.get("/api/data", (req, res) => {
     res.json({
         name: "Jack",
     });
