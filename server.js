@@ -18,6 +18,12 @@ app.get("/character/2", async (req, res) => {
     }
 });
 
+app.get("/data", (req, res) => {
+    res.json({
+        name: "Jack",
+    });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
