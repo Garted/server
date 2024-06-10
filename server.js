@@ -19,17 +19,18 @@ app.get("/api/genres", async (req, res) => {
             `https://api.themoviedb.org/3/genre/movie/list?language=en`,
             options
         );
-        res.json(response);
+        res.json(response.data);
     } catch (error) {
         console.error("Error fetching data from API:", error);
         res.status(500).json({ error: "Error fetching data from API" });
     }
 });
 
-app.get("/api/character/2", async (req, res) => {
+app.get("/api/movies", async (req, res) => {
     try {
         const response = await axios.get(
-            `https://rickandmortyapi.com/api/character/2`
+            `https://api.themoviedb.org/3/genre/movie/list?language=en`,
+            options
         );
         res.json(response.data);
     } catch (error) {
@@ -37,6 +38,18 @@ app.get("/api/character/2", async (req, res) => {
         res.status(500).json({ error: "Error fetching data from API" });
     }
 });
+
+// app.get("/api/character/2", async (req, res) => {
+//     try {
+//         const response = await axios.get(
+//             `https://rickandmortyapi.com/api/character/2`
+//         );
+//         res.json(response.data);
+//     } catch (error) {
+//         console.error("Error fetching data from API:", error);
+//         res.status(500).json({ error: "Error fetching data from API" });
+//     }
+// });
 
 app.get("/api/data", (req, res) => {
     res.json({
