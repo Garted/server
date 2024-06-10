@@ -13,6 +13,22 @@ const options = {
 
 app.use("/", express.static("public"));
 
+app.use((req, res, next) => {
+    res.header(
+        "Access-Control-Allow-Origin",
+        "http://localhost:3001/portfolio-react#/arrowflicks"
+    );
+    res.header(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
+
 app.get("/api/genres", async (req, res) => {
     try {
         const response = await axios.get(
