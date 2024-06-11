@@ -2,6 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const app = express();
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const options = {
     method: "GET",
@@ -13,19 +14,13 @@ const options = {
 };
 
 app.use("/", express.static("public"));
-
+app.use(bodyParser.json());
 app.use(
     cors({
-        origin: "http://localhost:3001",
+        origin: "*",
+        methods: ["GET", "POST"],
     })
 );
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "http://localhost:3001");
-//     res.header("Access-Control-Allow-Methods", "GET");
-//     res.header("Access-Control-Allow-Headers", "Content-Type");
-//     next();
-// });
-
 app.get("/api/genres", async (req, res) => {
     try {
         const response = await axios.get(
@@ -39,10 +34,11 @@ app.get("/api/genres", async (req, res) => {
     }
 });
 
-app.get("/api/movies", async (req, res) => {
+app.post("/api/films", async (req, res) => {
+    const { additionalString } = req.body;
     try {
         const response = await axios.get(
-            `https://api.themoviedb.org/3/genre/movie/list?language=en`,
+            `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US${additionalString}`,
             options
         );
         res.json(response.data);
@@ -52,22 +48,32 @@ app.get("/api/movies", async (req, res) => {
     }
 });
 
-// app.get("/api/character/2", async (req, res) => {
-//     try {
-//         const response = await axios.get(
-//             `https://rickandmortyapi.com/api/character/2`
-//         );
-//         res.json(response.data);
-//     } catch (error) {
-//         console.error("Error fetching data from API:", error);
-//         res.status(500).json({ error: "Error fetching data from API" });
-//     }
-// });
+app.post("/api/singlemovie", async (req, res) => {
+    const { id } = req.body;
+    try {
+        const response = await axios.get(
+            `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+            options
+        );
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error fetching data from API:", error);
+        res.status(500).json({ error: "Error fetching data from API" });
+    }
+});
 
-app.get("/api/data", (req, res) => {
-    res.json({
-        name: "Jack",
-    });
+app.post("/api/trailler", async (req, res) => {
+    const { id } = req.body;
+    try {
+        const response = await axios.get(
+            `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`,
+            options
+        );
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error fetching data from API:", error);
+        res.status(500).json({ error: "Error fetching data from API" });
+    }
 });
 
 const PORT = process.env.PORT || 3000;
