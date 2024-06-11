@@ -76,6 +76,42 @@ app.post("/api/trailler", async (req, res) => {
     }
 });
 
+app.get("/api/img/:id", async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ error: "ID is required" });
+    }
+    const imageUrl = `https://image.tmdb.org/t/p/w200/${id}`;
+    try {
+        const response = await axios.get(imageUrl, { responseType: "stream" });
+
+        res.setHeader("Content-Type", response.headers["content-type"]);
+        response.data.pipe(res);
+    } catch (error) {
+        console.error("Error fetching image from remote server:", error);
+        res.status(500).json({
+            error: "Error fetching image from remote server",
+        });
+    }
+});
+app.get("/api/bigimg/:id", async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ error: "ID is required" });
+    }
+    const imageUrl = `https://image.tmdb.org/t/p/w300/${id}`;
+    try {
+        const response = await axios.get(imageUrl, { responseType: "stream" });
+        res.setHeader("Content-Type", response.headers["content-type"]);
+        response.data.pipe(res);
+    } catch (error) {
+        console.error("Error fetching image from remote server:", error);
+        res.status(500).json({
+            error: "Error fetching image from remote server",
+        });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
