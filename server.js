@@ -47,6 +47,16 @@ app.post("/api/films", async (req, res) => {
         res.status(500).json({ error: "Error fetching data from API" });
     }
 });
+app.post("/api/formData", async (req, res) => {
+    const { data } = req.body;
+    try {
+        const response = { res: "OK" };
+        res.json(response);
+    } catch (error) {
+        console.error("Error fetching data from API:", error);
+        res.status(500).json({ error: "Error fetching data from API" });
+    }
+});
 
 app.post("/api/singlemovie", async (req, res) => {
     const { id } = req.body;
